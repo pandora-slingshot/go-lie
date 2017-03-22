@@ -4,6 +4,7 @@ import (
     "fmt"
     "net"
     "os"
+    "./utils"
 )
 
 func main() {
@@ -11,11 +12,10 @@ func main() {
     fmt.Printf("%v", username)
     fmt.Printf("%v", hostname)
     conn, err := net.Dial("tcp", hostname + ":8080")
-    if err != nil {
-        println("danger" + ": ", err.Error())
-        os.Exit(1)
-    }
+    utils.CheckError(err, "connection error")
+
     defer conn.Close()
+
     for true {
         println("waiting")
     }
