@@ -1,16 +1,36 @@
 package main
 
 import (
-    "net"
+    "fmt"
+    "github.com/julienschmidt/httprouter"
+	"encoding/json"
+    "net/http"
+    "log"
     "./utils"
 )
 
-func main() {
-    socket, err := net.Listen("tcp", ":8080")
+type resp_struct struct {
+	Text string
+}
+
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    fmt.Fprint(w, "Welcome!\n")
+}
+
+func AcceptVote(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	decoder := json.NewDecoder(r.Body)
+	var resp resp_struct
+	err := decoder.Decode(&resp)
     utils.CheckError(err, "connection error")
-    for true {
-        conn, err := socket.Accept()
-        utils.CheckError(err, "connection error")
-        println("connected: ", conn)
-    }
+	defer r.Body.Close()
+	log.Println(resp)
+	fmt.Fprintf(w, resp.Text)
+}
+
+func main() {
+    router := httprouter.New()
+    router.GET("/", Index)
+    router.POST("/vote/", AcceptVote)
+
+    log.Fatal(http.ListenAndServe(":8080", router))
 }
