@@ -2,9 +2,12 @@ Setup
 ===
 Install dependencies
 ---
-To set your go path: `export GOPATH=<the working directory you have the code in>  
+To set your go path: `export GOPATH=<the working directory you have the code in>`  
 To install depencies: `go get`  
 Dependencies should show up in the `src` folder.  
+
+Usage
+===
 
 Starting the Client
 ---
@@ -16,9 +19,9 @@ Starting the Server
 `go run server.go <host>`  
 Host will probably be localhost for now  
 
-Client Methods
+API Endpoints
 ===
-AcceptVote
+Method: AcceptVote
 ---
 Example usage:  
  `curl -H "Content-Type: application/json" -X POST -d '{"Text": "Some answer text submitted by user"}' http://localhost:8080/vote/`
