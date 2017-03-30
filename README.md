@@ -13,7 +13,7 @@ Host will probably be localhost for now
 
 Starting the Server
 ---
-`go run server.go <host>`
+`go run server.go <host>`  
 Host will probably be localhost for now  
 
 Client Methods
