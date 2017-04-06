@@ -7,7 +7,15 @@ import (
     "net/http"
     "log"
     "./utils"
+	"math/rand"
+	"time"
 )
+
+type room struct {
+	Key string
+}
+
+rooms := []room{}
 
 type resp_struct struct {
 	Text string
@@ -26,11 +34,26 @@ func AcceptVote(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	log.Println(resp)
 	fmt.Fprintf(w, resp.Text)
 }
-
+func StartGame(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	hash := RandomString(5)
+	var game_room := room{hash: hash}
+	rooms = append(rooms, game_room)
+	fmt.Fprintf(w, hash)
+}
+func RandomString(strlen int) string {
+	var r *rand.Rand
+	r = rand.New(rand.NewSource(time.Now().UnixNano()))
+	const chars = "0123456789"
+	result := make([]byte, strlen)
+	for i := range result {
+		result[i] = chars[r.Intn(len(chars))]
+	}
+	return string(result)
+}
 func main() {
     router := httprouter.New()
     router.GET("/", Index)
     router.POST("/vote/", AcceptVote)
-
+    router.POST("/start_game/", StartGame)
     log.Fatal(http.ListenAndServe(":8080", router))
 }
