@@ -15,7 +15,7 @@ type room struct {
 	Key string
 }
 
-rooms := []room{}
+var Rooms = []room{}
 
 type resp_struct struct {
     Text string
@@ -54,10 +54,13 @@ func DisplayAnswers(w http.ResponseWriter, r *http.Request, ps httprouter.Params
 func ShowAnswers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
+func CreateUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
 func StartGame(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	hash := RandomString(5)
-	var game_room := room{hash: hash}
-	rooms = append(rooms, game_room)
+	game_room := room{Key: hash}
+	Rooms = append(Rooms, game_room)
 	fmt.Fprintf(w, hash)
 }
 func RandomString(strlen int) string {
